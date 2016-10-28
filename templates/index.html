@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}Let's find a movie{% endblock %}
+{% block heading %}What kind of movie are you looking for?{% endblock %}
+{% block content %}
+    <form>
+        <label for="minRating">Enter your minimum rating</label>
+        <input type="text" name="minRating" id="minRating" placeholder="Enter a number eg 6.3">
+        <p class="lead">
+            <button class="btn btn-lg btn-secondary" id="submit" type="submit">Find my movie!</button>
+        </p>
+    </form>
+    <div id="result"></div>
+    <div class="modal"></div>
+{% endblock %}
+
+{% block scripts %}
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");
+                            $('form').hide()},
+    ajaxStop: function() { $body.removeClass("loading");}
+});
+
+$(function() {
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'get',
+            url: '{{ url_for("search") }}',
+            data: $('form').serialize(),
+            success: function(data) {
+                $('#result').html(data);
+            }
+        });
+    });
+});
+{% endblock %}
