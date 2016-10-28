@@ -26,4 +26,4 @@ def search():
     else:
         return render_template('error.html', error="Unable to access OMDB. Please try again later")
 
-app.run()
+
