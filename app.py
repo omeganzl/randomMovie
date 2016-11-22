@@ -1,9 +1,12 @@
 import requests
 from flask import Flask, render_template, request, url_for
 import findMovie
+from rq import Queue
+from rq.job import Job
+from worker import conn
 
 app = Flask(__name__)
-
+q = Queue(connection=conn)
 
 @app.route('/')
 def homepage():
@@ -27,3 +30,6 @@ def search():
         return render_template('error.html', error="Unable to access OMDB. Please try again later")
 
 
+if __name__ == '__main__':
+    app.run()
+    
